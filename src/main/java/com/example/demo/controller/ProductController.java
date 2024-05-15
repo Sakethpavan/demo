@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.AuthService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
 public class ProductController {
 
     private final RestTemplate restTemplate = new RestTemplate();
+
+    Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     private AuthService authService;
@@ -33,7 +37,7 @@ public class ProductController {
                     HttpMethod.GET,
                     entity,
                     String.class);
-
+            logger.info("products: {}", response);
             return ResponseEntity.ok(response.getBody());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching products");

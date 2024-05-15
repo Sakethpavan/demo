@@ -5,3 +5,6 @@ oauth:
   tokenEndPoint: ${hostUrl}/api/oauth/v1/token
   username: postman_2257
   password: 546bce364
+logging:
+  level:
+    org.springframework.web: "DEBUG"

@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.config.OAuthProperties;
 import com.example.demo.dto.AuthenticationResponseDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -45,8 +41,7 @@ public class AuthService {
         return this.accessToken;
     }
 
-
-    public void updateAccessAndRefreshTokens() {
+    private void updateAccessAndRefreshTokens() {
         String username = oAuthProperties.getUsername();
         String password = oAuthProperties.getPassword();
         String authString = Base64.getEncoder().encodeToString(
@@ -92,26 +87,4 @@ public class AuthService {
             throw new RuntimeException("Failed to refresh access token");
         }
     }
-
-//    public String getToken() {
-//        String username = oAuthProperties.getUsername();
-//        String password = oAuthProperties.getPassword();
-//        String authString = Base64.getEncoder().encodeToString(
-//                (oAuthProperties.getClientId() + ":" + oAuthProperties.getSecret()).getBytes()
-//        );
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.add(HttpHeaders.AUTHORIZATION, "Basic " + authString);
-//
-//        HttpEntity<String> entity = new HttpEntity<>(
-//                "{\"grant_type\":\"password\",\"username\":\"" + username + "\",\"password\":\"" + password + "\"}", headers);
-//
-//        ResponseEntity<AuthenticationResponseDTO> response = restTemplate.postForEntity(oAuthProperties.getTokenEndpoint(), entity, AuthenticationResponseDTO.class);
-//        if (response.getStatusCode().is2xxSuccessful()) {
-//            return Objects.requireNonNull(response.getBody()).getAccess_token();
-//        } else {
-//            throw new RuntimeException("Failed to obtain access token");
-//        }
-//    }
 }
