@@ -1,0 +1,7 @@
+hostUrl: https://pim-0f62dfa2cd.trial.akeneo.cloud
+oauth:
+  clientId: 8_4yglzjmqjw8w0owkwgo80kow00088co0o40skwswko48c08skg
+  secret: 3adx5ts3q2o0g4sgg40k0csowk0ssc0cock804c8o04gsgk48o
+  tokenEndPoint: ${hostUrl}/api/oauth/v1/token
+  username: postman_2257
+  password: 546bce364
