@@ -8,3 +8,6 @@ oauth:
 logging:
   level:
     org.springframework.web: "DEBUG"
+
+api:
+  productsEndpoint: ${hostUrl}/api/rest/v1/products

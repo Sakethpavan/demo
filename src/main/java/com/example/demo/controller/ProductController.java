@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.APIEndpoints;
+import com.example.demo.dto.ProductDTO;
 import com.example.demo.service.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,19 +10,22 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class ProductController {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
 
     Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private APIEndpoints apiEndpoints;
 
     @GetMapping("/products")
     public ResponseEntity<?> fetchProducts() {
@@ -33,7 +38,7 @@ public class ProductController {
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(
-                    "https://pim-0f62dfa2cd.trial.akeneo.cloud/api/rest/v1/products",
+                    apiEndpoints.getProductsEndpoint(),
                     HttpMethod.GET,
                     entity,
                     String.class);
@@ -43,4 +48,50 @@ public class ProductController {
             return ResponseEntity.status(500).body("Error fetching products");
         }
     }
+
+    @GetMapping("/products/{code}")
+    public ResponseEntity<?> fetchProduct(@PathVariable String code) {
+        String accessToken = authService.getAccessToken();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        String getProductEndpoint = apiEndpoints.getProductsEndpoint() + "/" + code;
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    getProductEndpoint,
+                    HttpMethod.GET,
+                    entity,
+                    String.class);
+            logger.info("product: {}", response);
+            return ResponseEntity.ok(response.getBody());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching product");
+        }
+    }
+
+    @PatchMapping("/products/{code}")
+    public ResponseEntity<?> createProduct(@PathVariable String code, @RequestBody ProductDTO partialUpdateBody) {
+        String accessToken = authService.getAccessToken();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+
+        HttpEntity<ProductDTO> entity = new HttpEntity<>(partialUpdateBody, headers);
+        String updateProductEndpoint = apiEndpoints.getProductsEndpoint() + "/" + code;
+        try {
+            ResponseEntity<Void> response = restTemplate.exchange(
+                    updateProductEndpoint,
+                    HttpMethod.PATCH,
+                    entity,
+                    Void.class);
+            logger.info("updatedProduct: {}", response);
+            return ResponseEntity.ok(response.getBody());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error while updating product");
+        }
+    }
+
+
 }
