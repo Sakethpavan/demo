@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.config.OAuthProperties;
+import com.example.demo.config.AuthProperties;
 import com.example.demo.dto.AuthenticationResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -17,14 +17,14 @@ import java.util.Objects;
 public class AuthService {
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final OAuthProperties oAuthProperties;
+    private final AuthProperties authProperties;
     private String accessToken;
     private String refreshToken;
     private Long expiresIn;
 
     @Autowired
-    public AuthService(OAuthProperties oAuthProperties) {
-        this.oAuthProperties = oAuthProperties;
+    public AuthService(AuthProperties authProperties) {
+        this.authProperties = authProperties;
     }
 
     public String getAccessToken() {
@@ -42,10 +42,10 @@ public class AuthService {
     }
 
     private void updateAccessAndRefreshTokens() {
-        String username = oAuthProperties.getUsername();
-        String password = oAuthProperties.getPassword();
+        String username = authProperties.getUsername();
+        String password = authProperties.getPassword();
         String authString = Base64.getEncoder().encodeToString(
-                (oAuthProperties.getClientId() + ":" + oAuthProperties.getSecret()).getBytes()
+                (authProperties.getClientId() + ":" + authProperties.getSecret()).getBytes()
         );
 
         HttpHeaders headers = new HttpHeaders();
@@ -55,7 +55,7 @@ public class AuthService {
         HttpEntity<String> entity = new HttpEntity<>(
                 "{\"grant_type\":\"password\",\"username\":\"" + username + "\",\"password\":\"" + password + "\"}", headers);
 
-        ResponseEntity<AuthenticationResponseDTO> response = restTemplate.postForEntity(oAuthProperties.getTokenEndpoint(), entity, AuthenticationResponseDTO.class);
+        ResponseEntity<AuthenticationResponseDTO> response = restTemplate.postForEntity(authProperties.getTokenEndpoint(), entity, AuthenticationResponseDTO.class);
 
         if (response.getStatusCode().is2xxSuccessful()) {
             AuthenticationResponseDTO responseBody = Objects.requireNonNull(response.getBody());
@@ -76,7 +76,7 @@ public class AuthService {
 
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
-        ResponseEntity<AuthenticationResponseDTO> response = restTemplate.postForEntity(oAuthProperties.getTokenEndpoint(), entity, AuthenticationResponseDTO.class);
+        ResponseEntity<AuthenticationResponseDTO> response = restTemplate.postForEntity(authProperties.getTokenEndpoint(), entity, AuthenticationResponseDTO.class);
 
         if (response.getStatusCode().is2xxSuccessful()) {
             AuthenticationResponseDTO responseBody = Objects.requireNonNull(response.getBody());

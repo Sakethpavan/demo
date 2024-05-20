@@ -4,8 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "oauth")
-public class OAuthProperties {
+@ConfigurationProperties(prefix = "auth")
+public class AuthProperties {
 
     private String clientId;
     private String secret;

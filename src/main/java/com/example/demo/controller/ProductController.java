@@ -67,12 +67,12 @@ public class ProductController {
             logger.info("product: {}", response);
             return ResponseEntity.ok(response.getBody());
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error fetching product");
+            return ResponseEntity.status(500).body("Error updating product");
         }
     }
 
     @PatchMapping("/products/{code}")
-    public ResponseEntity<?> createProduct(@PathVariable String code, @RequestBody ProductDTO partialUpdateBody) {
+    public ResponseEntity<?> updateProduct(@PathVariable String code, @RequestBody ProductDTO partialUpdateBody) {
         String accessToken = authService.getAccessToken();
 
         HttpHeaders headers = new HttpHeaders();
@@ -86,10 +86,32 @@ public class ProductController {
                     HttpMethod.PATCH,
                     entity,
                     Void.class);
-            logger.info("updatedProduct: {}", response);
+            logger.info("successfully updated product: {}", code);
             return ResponseEntity.ok(response.getBody());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error while updating product");
+        }
+    }
+
+    @PostMapping("/products")
+    public ResponseEntity<?> createProduct(@RequestBody ProductDTO body) {
+        String accessToken = authService.getAccessToken();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+
+        HttpEntity<ProductDTO> entity = new HttpEntity<>(body, headers);
+        String createProductEndpoint = apiEndpoints.getProductsEndpoint();
+        try {
+            ResponseEntity<ProductDTO> response = restTemplate.exchange(
+                    createProductEndpoint,
+                    HttpMethod.POST,
+                    entity,
+                    ProductDTO.class);
+            logger.info("created product: {}", response);
+            return ResponseEntity.ok(response.getBody());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error while creating product");
         }
     }
 

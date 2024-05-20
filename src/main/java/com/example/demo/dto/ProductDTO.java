@@ -32,13 +32,13 @@ public class ProductDTO {
     private String parent;
 
     @JsonProperty("values")
-    private Map<String, List<Map<String, Object>>> values;
+    private Map<String, List<AttributeValueDTO>> values;
 
     @JsonProperty("associations")
     private Map<String, Map<String, List<String>>> associations;
 
     @JsonProperty("quantifiedAssociations")
-    private Map<String, Map<String, List<Object>>> quantifiedAssociations ;
+    private Map<String, List<QuantifiedAssociationDTO>> quantifiedAssociations ;
 
     @JsonProperty("created")
     private String created;
@@ -111,11 +111,11 @@ public class ProductDTO {
         this.parent = parent;
     }
 
-    public Map<String, List<Map<String, Object>>> getValues() {
+    public Map<String, List<AttributeValueDTO>> getValues() {
         return values;
     }
 
-    public void setValues(Map<String, List<Map<String, Object>>> values) {
+    public void setValues(Map<String, List<AttributeValueDTO>> values) {
         this.values = values;
     }
 
@@ -127,11 +127,11 @@ public class ProductDTO {
         this.associations = associations;
     }
 
-    public Map<String, Map<String, List<Object>>> getQuantifiedAssociations() {
+    public Map<String, List<QuantifiedAssociationDTO>> getQuantifiedAssociations() {
         return quantifiedAssociations;
     }
 
-    public void setQuantifiedAssociations(Map<String, Map<String, List<Object>>> quantifiedAssociations) {
+    public void setQuantifiedAssociations(Map<String, List<QuantifiedAssociationDTO>> quantifiedAssociations) {
         this.quantifiedAssociations = quantifiedAssociations;
     }
 
@@ -175,3 +175,4 @@ public class ProductDTO {
         this.completenesses = completenesses;
     }
 }
+
