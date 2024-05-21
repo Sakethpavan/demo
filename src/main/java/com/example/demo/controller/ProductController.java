@@ -2,16 +2,16 @@ package com.example.demo.controller;
 
 import com.example.demo.config.APIEndpoints;
 import com.example.demo.dto.ProductDTO;
+import com.example.demo.exception.CustomException;
 import com.example.demo.service.AuthService;
+import com.example.demo.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
 
 @RestController
 public class ProductController {
@@ -27,58 +27,24 @@ public class ProductController {
     @Autowired
     private APIEndpoints apiEndpoints;
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/products")
-    public ResponseEntity<?> fetchProducts() {
-        String accessToken = authService.getAccessToken();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    apiEndpoints.getProductsEndpoint(),
-                    HttpMethod.GET,
-                    entity,
-                    String.class);
-            logger.info("products: {}", response);
-            return ResponseEntity.ok(response.getBody());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error fetching products");
-        }
+    public ResponseEntity<?> getProducts()  throws CustomException {
+        String response = productService.getProducts();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/products/{code}")
-    public ResponseEntity<?> fetchProduct(@PathVariable String code) {
-        String accessToken = authService.getAccessToken();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        String getProductEndpoint = apiEndpoints.getProductsEndpoint() + "/" + code;
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    getProductEndpoint,
-                    HttpMethod.GET,
-                    entity,
-                    String.class);
-            logger.info("product: {}", response);
-            return ResponseEntity.ok(response.getBody());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error updating product");
-        }
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable String code) throws CustomException{
+        ProductDTO responseBody = productService.getProduct(code);
+        return ResponseEntity.ok(responseBody);
     }
 
     @PatchMapping("/products/{code}")
     public ResponseEntity<?> updateProduct(@PathVariable String code, @RequestBody ProductDTO partialUpdateBody) {
-        String accessToken = authService.getAccessToken();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-
-        HttpEntity<ProductDTO> entity = new HttpEntity<>(partialUpdateBody, headers);
+        HttpEntity<ProductDTO> entity = new HttpEntity<>(partialUpdateBody);
         String updateProductEndpoint = apiEndpoints.getProductsEndpoint() + "/" + code;
         try {
             ResponseEntity<Void> response = restTemplate.exchange(
@@ -95,12 +61,7 @@ public class ProductController {
 
     @PostMapping("/products")
     public ResponseEntity<?> createProduct(@RequestBody ProductDTO body) {
-        String accessToken = authService.getAccessToken();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-
-        HttpEntity<ProductDTO> entity = new HttpEntity<>(body, headers);
+        HttpEntity<ProductDTO> entity = new HttpEntity<>(body);
         String createProductEndpoint = apiEndpoints.getProductsEndpoint();
         try {
             ResponseEntity<ProductDTO> response = restTemplate.exchange(
@@ -114,6 +75,5 @@ public class ProductController {
             return ResponseEntity.status(500).body("Error while creating product");
         }
     }
-
 
 }
