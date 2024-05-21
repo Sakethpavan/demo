@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.config.AuthProperties;
 import com.example.demo.dto.AuthenticationResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,12 +16,11 @@ import java.util.Objects;
 public class AuthService {
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final AuthProperties authProperties;
     private String accessToken;
     private String refreshToken;
     private Long expiresIn;
 
-    @Autowired
+    private final AuthProperties authProperties;
     public AuthService(AuthProperties authProperties) {
         this.authProperties = authProperties;
     }

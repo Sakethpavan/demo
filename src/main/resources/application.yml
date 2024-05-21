@@ -3,3 +3,6 @@ spring:
     name: demo
   profiles:
     active: dev
+server:
+  port: 8080
+General.EXCEPTION_MESSAGE: Request could not be processed due to some issue. Please try again!

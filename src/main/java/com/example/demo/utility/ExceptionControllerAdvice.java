@@ -25,26 +25,13 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ErrorInfo> customexceptionHandler(CustomException exception) {
+    public ResponseEntity<ErrorInfo> customExceptionHandler(CustomException exception) {
         ErrorInfo error = new ErrorInfo();
         error.setErrorMessage(environment.getProperty(exception.getMessage()));
         error.setTimestamp(LocalDateTime.now());
         error.setErrorCode(HttpStatus.NOT_FOUND.value());
-        return new ResponseEntity<ErrorInfo>(error, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
-
-//    @ExceptionHandler({ ConstraintViolationException.class, MethodArgumentNotValidException.class })
-//    public ResponseEntity<ErrorInfo> pathExceptionHandler(ConstraintViolationException exception) {
-//
-//        ErrorInfo errorInfo = new ErrorInfo();
-//        errorInfo.setErrorCode(HttpStatus.BAD_REQUEST.value());
-//
-//        String errorMsg = exception.getConstraintViolations().stream().map(x -> x.getMessage())
-//                .collect(Collectors.joining(", "));
-//        errorInfo.setErrorMessage(errorMsg);
-//        errorInfo.setTimestamp(LocalDateTime.now());
-//        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
-//    }
 
 }
 
