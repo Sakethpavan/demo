@@ -11,3 +11,4 @@ logging:
 
 api:
   productsEndpoint: ${hostUrl}/api/rest/v1/products
+  productModelsEndpoint: ${hostUrl}/api/rest/v1/product-models

@@ -1,5 +1,7 @@
-package com.example.demo.dto;
+package com.example.demo.dto.product;
 
+import com.example.demo.dto.AttributeValueDTO;
+import com.example.demo.dto.QuantifiedAssociationDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.config.APIEndpoints;
 import com.example.demo.dto.product.ProductDTO;
-
+import com.example.demo.dto.product.ProductModelDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class ProductService {
+public class ProductModelService {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -24,42 +24,42 @@ public class ProductService {
     @Autowired
     private APIEndpoints apiEndpoints;
 
-    Logger logger = LogManager.getLogger(ProductService.class);
+    Logger logger = LogManager.getLogger(ProductModelService.class);
 
-    public String getProducts() {
+    public String getProductModels() {
         ResponseEntity<String> response = restTemplate.exchange(
-                apiEndpoints.getProductsEndpoint(),
+                apiEndpoints.getProductModelsEndpoint(),
                 HttpMethod.GET,
                 null,
                 String.class
         );
-        logger.info("products: {}", response);
+        logger.info("product Models: {}", response);
         return response.getBody();
     }
 
-    public ProductDTO getProduct(String code) {
-        String getProductEndpoint = apiEndpoints.getProductsEndpoint() + "/" + code;
-        ResponseEntity<ProductDTO> response = restTemplate.exchange(
-                getProductEndpoint,
+    public ProductModelDTO getProductModel(String code) {
+        String getProductModelsEndpoint = apiEndpoints.getProductModelsEndpoint() + "/" + code;
+        ResponseEntity<ProductModelDTO> response = restTemplate.exchange(
+                getProductModelsEndpoint,
                 HttpMethod.GET,
                 null,
-                ProductDTO.class
+                ProductModelDTO.class
         );
         logger.info("product: {}", response.getBody());
         return response.getBody();
     }
 
-    public void updateProduct(String code, ProductDTO partialUpdateBody) {
+    public void updateProductModel(String code, ProductDTO partialUpdateBody) {
         HttpEntity<ProductDTO> entity = new HttpEntity<>(partialUpdateBody);
-        String updateProductEndpoint = apiEndpoints.getProductsEndpoint() + "/" + code;
-        restTemplate.exchange(updateProductEndpoint, HttpMethod.PATCH, entity, Void.class);
+        String updateProductModelEndpoint = apiEndpoints.getProductModelsEndpoint() + "/" + code;
+        restTemplate.exchange(updateProductModelEndpoint, HttpMethod.PATCH, entity, Void.class);
         logger.info("Successfully updated product: {}", code);
     }
 
-    public void createProduct(ProductDTO newProduct) {
+    public void createProductModel(ProductDTO newProduct) {
         HttpEntity<ProductDTO> entity = new HttpEntity<>(newProduct);
-        String createProductEndpoint = apiEndpoints.getProductsEndpoint();
-        restTemplate.exchange(createProductEndpoint, HttpMethod.POST, entity, ProductDTO.class);
+        String createProductModelEndpoint = apiEndpoints.getProductModelsEndpoint();
+        restTemplate.exchange(createProductModelEndpoint, HttpMethod.POST, entity, ProductDTO.class);
         logger.info("created product: {}", newProduct.getIdentifier());
     }
 }
