@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.product.ProductDTO;
 import com.example.demo.dto.product.ProductModelDTO;
 import com.example.demo.exception.CustomException;
 import com.example.demo.service.ProductModelService;
-import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +15,7 @@ public class ProductModelController {
     @Autowired
     private ProductModelService productModelService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> getProductModels()  throws CustomException {
         String response = productModelService.getProductModels();
         return ResponseEntity.ok(response);
@@ -30,13 +28,13 @@ public class ProductModelController {
     }
 
     @PatchMapping("/{code}")
-    public ResponseEntity<Void> updateProductModel(@PathVariable String code, @RequestBody ProductDTO partialUpdateBody) throws CustomException {
+    public ResponseEntity<Void> updateProductModel(@PathVariable String code, @RequestBody ProductModelDTO partialUpdateBody) throws CustomException {
         productModelService.updateProductModel(code, partialUpdateBody);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Void> createProductModel(@RequestBody ProductDTO newProduct) throws CustomException {
+    @PostMapping
+    public ResponseEntity<Void> createProductModel(@RequestBody ProductModelDTO newProduct) throws CustomException {
         productModelService.createProductModel(newProduct);
         return ResponseEntity.noContent().build();
     }

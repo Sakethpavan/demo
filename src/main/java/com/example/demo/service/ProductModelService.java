@@ -45,21 +45,21 @@ public class ProductModelService {
                 null,
                 ProductModelDTO.class
         );
-        logger.info("product: {}", response.getBody());
+        logger.info("product model: {}", response.getBody());
         return response.getBody();
     }
 
-    public void updateProductModel(String code, ProductDTO partialUpdateBody) {
-        HttpEntity<ProductDTO> entity = new HttpEntity<>(partialUpdateBody);
+    public void updateProductModel(String code, ProductModelDTO partialUpdateBody) {
+        HttpEntity<ProductModelDTO> entity = new HttpEntity<>(partialUpdateBody);
         String updateProductModelEndpoint = apiEndpoints.getProductModelsEndpoint() + "/" + code;
         restTemplate.exchange(updateProductModelEndpoint, HttpMethod.PATCH, entity, Void.class);
-        logger.info("Successfully updated product: {}", code);
+        logger.info("Successfully updated product model: {}", code);
     }
 
-    public void createProductModel(ProductDTO newProduct) {
-        HttpEntity<ProductDTO> entity = new HttpEntity<>(newProduct);
+    public void createProductModel(ProductModelDTO newProduct) {
+        HttpEntity<ProductModelDTO> entity = new HttpEntity<>(newProduct);
         String createProductModelEndpoint = apiEndpoints.getProductModelsEndpoint();
-        restTemplate.exchange(createProductModelEndpoint, HttpMethod.POST, entity, ProductDTO.class);
-        logger.info("created product: {}", newProduct.getIdentifier());
+        restTemplate.exchange(createProductModelEndpoint, HttpMethod.POST, entity, ProductModelDTO.class);
+        logger.info("created product model: {}", newProduct.getCode());
     }
 }
