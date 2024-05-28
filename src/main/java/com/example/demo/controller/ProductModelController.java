@@ -27,9 +27,9 @@ public class ProductModelController {
         return ResponseEntity.ok(responseBody);
     }
 
-    @PatchMapping("/{code}")
-    public ResponseEntity<Void> updateProductModel(@PathVariable String code, @RequestBody ProductModelDTO partialUpdateBody) throws CustomException {
-        productModelService.updateProductModel(code, partialUpdateBody);
+    @PatchMapping
+    public ResponseEntity<Void> updateProductModel(@RequestBody ProductModelDTO partialUpdateBody) throws CustomException {
+        productModelService.updateProductModel(partialUpdateBody);
         return ResponseEntity.noContent().build();
     }
 

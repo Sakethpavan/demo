@@ -49,11 +49,11 @@ public class ProductModelService {
         return response.getBody();
     }
 
-    public void updateProductModel(String code, ProductModelDTO partialUpdateBody) {
+    public void updateProductModel(ProductModelDTO partialUpdateBody) {
         HttpEntity<ProductModelDTO> entity = new HttpEntity<>(partialUpdateBody);
-        String updateProductModelEndpoint = apiEndpoints.getProductModelsEndpoint() + "/" + code;
+        String updateProductModelEndpoint = apiEndpoints.getProductModelsEndpoint();
         restTemplate.exchange(updateProductModelEndpoint, HttpMethod.PATCH, entity, Void.class);
-        logger.info("Successfully updated product model: {}", code);
+        logger.info("Successfully updated product model: {}", partialUpdateBody.getCode());
     }
 
     public void createProductModel(ProductModelDTO newProduct) {
