@@ -33,7 +33,6 @@ public class AuthInterceptor implements ClientHttpRequestInterceptor {
 
         // Set Accept header to application/json only
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.valueOf("application/vnd.akeneo.collection+json"));
         return execution.execute(request, body);
     }
 }

@@ -66,11 +66,15 @@ public class AuthService {
     }
 
     private void updateAccessTokenFromRefreshToken() {
+        String authString = Base64.getEncoder().encodeToString(
+                (authProperties.getClientId() + ":" + authProperties.getSecret()).getBytes()
+        );
         // Prepare the request body for refreshing the access token
         String requestBody = "{\"refresh_token\":\"" + this.refreshToken + "\",\"grant_type\":\"refresh_token\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add(HttpHeaders.AUTHORIZATION, "Basic " + authString);
 
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
