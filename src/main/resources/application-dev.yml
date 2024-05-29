@@ -1,10 +1,10 @@
-hostUrl: https://pim-0f62dfa2cd.trial.akeneo.cloud
+hostUrl: https://pim-8f53d76134.trial.akeneo.cloud/
 auth:
-  clientId: 8_4yglzjmqjw8w0owkwgo80kow00088co0o40skwswko48c08skg
-  secret: 3adx5ts3q2o0g4sgg40k0csowk0ssc0cock804c8o04gsgk48o
+  clientId: 8_66ezeyfxjbgocsk0w4cgokw0k8wooogw44kogwccos4gswo40w
+  secret: 49x98j1wqtmosg0okcw48os0kg00o0swoco48o4kos84s8w8w0
   tokenEndPoint: ${hostUrl}/api/oauth/v1/token
-  username: postman_2257
-  password: 546bce364
+  username: postman_1986
+  password: 755677568
 logging:
   level:
     org.springframework.web: "DEBUG"
